@@ -1,6 +1,6 @@
 #!/bin/bash
 
-homedir="/cellar/users/asinghal/Workspace/dcodr"
+homedir="/cellar/users/asinghal/Workspace/nest_vnn"
 
 dataset="av"
 zscore_method="auc"
