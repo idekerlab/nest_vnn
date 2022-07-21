@@ -71,7 +71,7 @@ _sample_ folder)
 
 2. To run the model in a GPU server,  execute the following:
     ```
-    python predict.py   -gene2id gene2ind.txt
+    python predict_drugcell.py   -gene2id gene2ind.txt
                         -cell2id cell2ind.txt
                         -genotype cell2mutation.txt
                         -cn_deletions cell2cndeletion.txt
@@ -160,7 +160,7 @@ Finally, to train a NeST-VNN model, execute a command line similar to the exampl
 _sample/train.sh_:
 
 ```
-python -u train.py  -onto ontology.txt
+python -u train_drugcell.py  -onto ontology.txt
                     -gene2id gene2ind.txt
                     -cell2id cell2ind.txt
                     -genotype cell2mutation.txt
