@@ -2,21 +2,21 @@
 homedir=$1
 zscore_method=$5
 
-gene2idfile="${homedir}/data/training_files_av/gene2ind_${2}_${3}.txt"
-cell2idfile="${homedir}/data/GENIE/cell2ind_428.txt"
-mutationfile="${homedir}/data/GENIE/cell2mutation_428.txt"
-cn_deletionfile="${homedir}/data/GENIE/cell2cndeletion_428.txt"
-cn_amplificationfile="${homedir}/data/GENIE/cell2cnamplification_428.txt"
-testdatafile="${homedir}/data/GENIE/test_428_${4}.txt"
+gene2idfile="${homedir}/data/training_files_${3}/gene2ind_${2}_${3}.txt"
+cell2idfile="${homedir}/data/PDX/cell2ind.txt"
+mutationfile="${homedir}/data/PDX/cell2mutations.txt"
+cn_deletionfile="${homedir}/data/PDX/cell2cndeletions.txt"
+cn_amplificationfile="${homedir}/data/PDX/cell2cnamplifications.txt"
+testdatafile="${homedir}/data/PDX/test_${4}.txt"
 
-modeldir="${homedir}/models/model_${2}_${3}_${4}_${5}_${6}"
+modeldir="${homedir}/models/single/model_${2}_${3}_${4}_${5}"
 modelfile="${modeldir}/model_final.pt"
 
 stdfile="${modeldir}/std.txt"
 
-resultfile="${modeldir}/predict_genie_428"
+resultfile="${modeldir}/predict_pdx"
 
-hiddendir="${modeldir}/hidden_genie_428"
+hiddendir="${modeldir}/hidden_pdx"
 if [ -d $hiddendir ]
 then
 	rm -rf $hiddendir

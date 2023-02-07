@@ -17,7 +17,7 @@ def main():
 	parser.add_argument('-lr', help = 'Learning rate', type = float, default = 0.001)
 	parser.add_argument('-wd', help = 'Weight decay', type = float, default = 0.001)
 	parser.add_argument('-alpha', help = 'Loss parameter alpha', type = float, default = 0.3)
-	parser.add_argument('-batchsize', help = 'Batchsize', type = int, default = 5000)
+	parser.add_argument('-batchsize', help = 'Batchsize', type = int, default = 64)
 	parser.add_argument('-modeldir', help = 'Folder for trained models', type = str, default = 'MODEL/')
 	parser.add_argument('-cuda', help = 'Specify GPU', type = int, default = 0)
 	parser.add_argument('-gene2id', help = 'Gene to ID mapping file', type = str)
@@ -30,7 +30,7 @@ def main():
 	parser.add_argument('-zscore_method', help='zscore method (zscore/robustz)', type=str, default = 'auc')
 	parser.add_argument('-std', help = 'Standardization File', type = str, default = 'MODEL/std.txt')
 	parser.add_argument('-patience', help = 'Early stopping epoch limit', type = int, default = 30)
-	parser.add_argument('-delta', help = 'Minimum change in loss to be considered an improvement', type = float, default = 0.002)
+	parser.add_argument('-delta', help = 'Minimum change in loss to be considered an improvement', type = float, default = 0.001)
 	parser.add_argument('-min_dropout_layer', help = 'Start dropout from this Layer number', type = int, default = 2)
 	parser.add_argument('-dropout_fraction', help = 'Dropout Fraction', type = float, default = 0.3)
 
@@ -46,8 +46,8 @@ def main():
 	elif opt.optimize == 2:
 		trial_params = OptunaNNTrainer(data_wrapper).exec_study()
 		for key, value in trial_params.items():
-			if hasattr(opt, key):
-				setattr(opt, key, value)
+			if hasattr(data_wrapper, key):
+				setattr(data_wrapper, key, value)
 		GradientNNTrainer(data_wrapper).train_model()
 
 	else:

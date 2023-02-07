@@ -15,6 +15,7 @@ import util
 from nn_trainer import *
 from training_data_wrapper import *
 from drugcell_nn import *
+from ccc_loss import *
 
 
 class OptunaNNTrainer(NNTrainer):
@@ -25,18 +26,20 @@ class OptunaNNTrainer(NNTrainer):
 
 	def exec_study(self):
 		search_space = {
-			"genotype_hiddens": [2, 4],
-			"lr": [1e-4, 1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4]
+			"genotype_hiddens": [4],
+			"lr": [1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4, 1e-3]
 		}
 		study = optuna.create_study(sampler=GridSampler(search_space), direction="maximize")
-		study.optimize(self.train_model, n_trials=15)
+		study.optimize(self.train_model, n_trials=8)
+		#study = optuna.create_study(direction="maximize")
+		#study.optimize(self.train_model, n_trials=10)
 		return self.print_result(study)
 
 
 	def setup_trials(self, trial):
 
-		self.data_wrapper.genotype_hiddens = trial.suggest_categorical("genotype_hiddens", [2, 4])
-		self.data_wrapper.lr = trial.suggest_float("lr", 1e-4, 6e-4, log=True)
+		self.data_wrapper.genotype_hiddens = trial.suggest_categorical("genotype_hiddens", [4])
+		self.data_wrapper.lr = trial.suggest_categorical("lr", [1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4, 1e-3])
 
 		batch_size = self.data_wrapper.batchsize
 		if batch_size > len(self.train_feature)/4:
@@ -100,7 +103,7 @@ class OptunaNNTrainer(NNTrainer):
 
 				total_loss = 0
 				for name, output in aux_out_map.items():
-					loss = nn.MSELoss()
+					loss = CCCLoss()
 					if name == 'final':
 						total_loss += loss(output, cuda_labels)
 					else:
@@ -138,7 +141,7 @@ class OptunaNNTrainer(NNTrainer):
 					val_label_gpu = torch.cat([val_label_gpu, cuda_labels], dim=0)
 
 				for name, output in aux_out_map.items():
-					loss = nn.MSELoss()
+					loss = CCCLoss()
 					if name == 'final':
 						val_loss += loss(output, cuda_labels)
 

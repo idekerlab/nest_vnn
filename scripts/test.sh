@@ -2,17 +2,14 @@
 homedir=$1
 zscore_method=$5
 
-gene2idfile="${homedir}/data/training_files_av/gene2ind_${2}_${3}.txt"
-cell2idfile="${homedir}/data/training_files_av/cell2ind_${3}.txt"
-mutationfile="${homedir}/data/training_files_av/cell2mutation_${2}_${3}.txt"
-cn_deletionfile="${homedir}/data/training_files_av/cell2cndeletion_${2}_${3}.txt"
-cn_amplificationfile="${homedir}/data/training_files_av/cell2cnamplification_${2}_${3}.txt"
-testdatafile="${homedir}/data/training_files_av/${6}_test_${3}_${4}.txt"
+gene2idfile="${homedir}/data/training_files_${3}/gene2ind_${2}_${3}.txt"
+cell2idfile="${homedir}/data/training_files_${3}/cell2ind_${3}.txt"
+mutationfile="${homedir}/data/training_files_${3}/cell2mutation_${2}_${3}.txt"
+cn_deletionfile="${homedir}/data/training_files_${3}/cell2cndeletion_${2}_${3}.txt"
+cn_amplificationfile="${homedir}/data/training_files_${3}/cell2cnamplification_${2}_${3}.txt"
+testdatafile="${homedir}/data/training_files_${3}/train_${3}_${4}.txt"
 
-i=$6
-j=$7
-nf=$(( i + 5*(j-1) ))
-modeldir="${homedir}/models/mbb/model_${2}_${3}_${4}_${5}_${nf}"
+modeldir="${homedir}/models/single/model_${2}_${3}_${4}_${5}"
 modelfile="${modeldir}/model_final.pt"
 
 stdfile="${modeldir}/std.txt"

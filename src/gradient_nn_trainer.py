@@ -10,6 +10,7 @@ import util
 from nn_trainer import *
 from training_data_wrapper import *
 from drugcell_nn import *
+from ccc_loss import *
 
 
 class GradientNNTrainer(NNTrainer):
@@ -67,7 +68,7 @@ class GradientNNTrainer(NNTrainer):
 
 				total_loss = 0
 				for name, output in aux_out_map.items():
-					loss = nn.MSELoss()
+					loss = CCCLoss()
 					if name == 'final':
 						total_loss += loss(output, cuda_labels)
 					else:
@@ -90,6 +91,7 @@ class GradientNNTrainer(NNTrainer):
 
 			val_predict = torch.zeros(0, 0).cuda(self.data_wrapper.cuda)
 
+			val_loss = 0
 			for i, (inputdata, labels) in enumerate(val_loader):
 				# Convert torch tensor to Variable
 				features = util.build_input_vector(inputdata, self.data_wrapper.cell_features)
@@ -105,9 +107,8 @@ class GradientNNTrainer(NNTrainer):
 					val_predict = torch.cat([val_predict, aux_out_map['final'].data], dim=0)
 					val_label_gpu = torch.cat([val_label_gpu, cuda_labels], dim=0)
 
-				val_loss = 0
 				for name, output in aux_out_map.items():
-					loss = nn.MSELoss()
+					loss = CCCLoss()
 					if name == 'final':
 						val_loss += loss(output, cuda_labels)
 

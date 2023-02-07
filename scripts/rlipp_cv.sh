@@ -2,10 +2,10 @@
 
 homedir=$1
 
-ontology="${homedir}/data/training_files_av/ontology_${2}_${3}.txt"
-gene2idfile="${homedir}/data/training_files_av/gene2ind_${2}_${3}.txt"
-cell2idfile="${homedir}/data/training_files_av/cell2ind_${3}.txt"
-test="${homedir}/data/training_files_av/${6}_test_${3}_${4}.txt"
+ontology="${homedir}/data/training_files_${3}/ontology_${2}_${3}.txt"
+gene2idfile="${homedir}/data/training_files_${3}/gene2ind_${2}_${3}.txt"
+cell2idfile="${homedir}/data/training_files_${3}/cell2ind_${3}.txt"
+test="${homedir}/data/training_files_${3}/${6}_test_${3}_${4}.txt"
 
 i=$6
 j=$7
@@ -19,9 +19,10 @@ hidden="${modeldir}/hidden"
 
 cpu_count=$8
 
-genotype_hiddens=`grep "genotype_hiddens" "${modeldir}/train.log" | tail -1`
-readarray -d : -t str <<< "$genotype_hiddens"
-neurons=`echo "${str[1]}" | xargs`
+#genotype_hiddens=`grep "genotype_hiddens" "${modeldir}/train.log" | tail -1`
+#readarray -d : -t str <<< "$genotype_hiddens"
+#neurons=`echo "${str[1]}" | xargs`
+neurons=4
 
 python -u ${homedir}/src/rlipp_helper.py -hidden $hidden -ontology $ontology -test $test \
 	-gene2idfile $gene2idfile -cell2idfile $cell2idfile -sys_output $sys_output -gene_output $gene_output \

@@ -2,10 +2,10 @@
 
 homedir=$1
 
-ontology="${homedir}/data/training_files_av/ontology_${2}_${3}.txt"
-gene2idfile="${homedir}/data/training_files_av/gene2ind_${2}_${3}.txt"
-cell2idfile="${homedir}/data/training_files_av/cell2ind_${3}.txt"
-test="${homedir}/data/training_files_av/${6}_test_${3}_${4}.txt"
+ontology="${homedir}/data/training_files_${3}/ontology_${2}_${3}.txt"
+gene2idfile="${homedir}/data/training_files_${3}/gene2ind_${2}_${3}.txt"
+cell2idfile="${homedir}/data/training_files_${3}/cell2ind_${3}.txt"
+test="${homedir}/data/training_files_${3}/${6}_test_${3}_${4}.txt"
 
 resultdir="${homedir}/models/shuffled_input/${6}_${7}"
 predicted="${resultdir}/predict.txt"

@@ -60,6 +60,7 @@ class DrugCellNN(nn.Module):
 	def contruct_direct_gene_layer(self):
 
 		for gene,_ in self.gene_id_mapping.items():
+			#self.add_module(gene + '_dropout_layer', nn.Dropout(p = self.dropout_fraction))
 			self.add_module(gene + '_feature_layer', nn.Linear(self.feature_dim, 1))
 			self.add_module(gene + '_batchnorm_layer', nn.BatchNorm1d(1))
 
@@ -109,11 +110,11 @@ class DrugCellNN(nn.Module):
 				term_hidden = self.term_dim_map[term]
 
 				if i >= self.min_dropout_layer:
-					self.add_module(term+'_dropout_layer', nn.Dropout(p = self.dropout_fraction))
-				self.add_module(term+'_linear_layer', nn.Linear(input_size, term_hidden))
-				self.add_module(term+'_batchnorm_layer', nn.BatchNorm1d(term_hidden))
-				self.add_module(term+'_aux_linear_layer1', nn.Linear(term_hidden, 1))
-				self.add_module(term+'_aux_linear_layer2', nn.Linear(1, 1))
+					self.add_module(term + '_dropout_layer', nn.Dropout(p = self.dropout_fraction))
+				self.add_module(term + '_linear_layer', nn.Linear(input_size, term_hidden))
+				self.add_module(term + '_batchnorm_layer', nn.BatchNorm1d(term_hidden))
+				self.add_module(term + '_aux_linear_layer1', nn.Linear(term_hidden, 1))
+				self.add_module(term + '_aux_linear_layer2', nn.Linear(1, 1))
 
 			i += 1
 			dG.remove_nodes_from(leaves)
@@ -127,6 +128,7 @@ class DrugCellNN(nn.Module):
 
 		feat_out_list = []
 		for gene, i in self.gene_id_mapping.items():
+			#gene_dropout = self._modules[gene + '_dropout_layer'](x[:, i, :])
 			feat_out = torch.tanh(self._modules[gene + '_feature_layer'](x[:, i, :]))
 			hidden_embeddings_map[gene] = self._modules[gene + '_batchnorm_layer'](feat_out)
 			feat_out_list.append(hidden_embeddings_map[gene])
@@ -149,35 +151,17 @@ class DrugCellNN(nn.Module):
 
 				child_input = torch.cat(child_input_list, 1)
 				if i >= self.min_dropout_layer:
-					dropout_out = self._modules[term+'_dropout_layer'](child_input)
-					term_NN_out = self._modules[term+'_linear_layer'](dropout_out)
+					dropout_out = self._modules[term + '_dropout_layer'](child_input)
+					term_NN_out = self._modules[term + '_linear_layer'](dropout_out)
 				else:
-					term_NN_out = self._modules[term+'_linear_layer'](child_input)
+					term_NN_out = self._modules[term + '_linear_layer'](child_input)
 				Tanh_out = torch.tanh(term_NN_out)
-				hidden_embeddings_map[term] = self._modules[term+'_batchnorm_layer'](Tanh_out)
-				aux_layer1_out = torch.tanh(self._modules[term+'_aux_linear_layer1'](hidden_embeddings_map[term]))
-				aux_out_map[term] = self._modules[term+'_aux_linear_layer2'](aux_layer1_out)
+				hidden_embeddings_map[term] = self._modules[term + '_batchnorm_layer'](Tanh_out)
+				aux_layer1_out = torch.tanh(self._modules[term + '_aux_linear_layer1'](hidden_embeddings_map[term]))
+				aux_out_map[term] = self._modules[term + '_aux_linear_layer2'](aux_layer1_out)
 
 		final_input = hidden_embeddings_map[self.root]
 		aux_layer_out = torch.tanh(self._modules['final_aux_linear_layer'](final_input))
 		aux_out_map['final'] = self._modules['final_linear_layer_output'](aux_layer_out)
 
 		return aux_out_map, hidden_embeddings_map
-
-
-	# Unused and not working as expected
-	def get_gene_weights(self, weight_type='direct_gene_layer.weight'):
-		term_weights_map = {}
-		for name, param in self.named_parameters():
-			if weight_type not in name:
-				continue
-			term = name.split('_')[0]
-			if term not in self.term_direct_gene_map.keys():
-				continue
-			print(term, param.shape)
-			if len(self.term_direct_gene_map[term]) == param.shape[1]:
-				term_weights_map[term] = param.data.cpu().numpy().T
-			else:
-				ngenes = len(self.term_direct_gene_map[term])
-				term_weights_map[term] = param.data.cpu().numpy().T[0:ngenes]
-		return term_weights_map
