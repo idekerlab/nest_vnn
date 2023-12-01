@@ -12,7 +12,7 @@ import torch.nn.functional as F
 import util
 
 
-def predict_drugcell(predict_data, gene_dim, model_file, hidden_folder, batch_size, result_file, cell_features):
+def predict(predict_data, gene_dim, model_file, hidden_folder, batch_size, result_file, cell_features):
 
 	feature_dim = gene_dim
 
@@ -81,7 +81,7 @@ def predict_drugcell(predict_data, gene_dim, model_file, hidden_folder, batch_si
 	np.savetxt(result_file + '.txt', test_predict.cpu().numpy(),'%.4e')
 
 
-parser = argparse.ArgumentParser(description='Predict DrugCell')
+parser = argparse.ArgumentParser(description='Predict VNN')
 parser.add_argument('-predict', help='Dataset to be predicted', type=str)
 parser.add_argument('-batchsize', help='Batchsize', type=int, default=1000)
 parser.add_argument('-gene2id', help='Gene to ID mapping file', type=str)
@@ -104,20 +104,8 @@ gene2id_mapping = util.load_mapping(opt.gene2id, "genes")
 
 # load cell/drug features
 mutations = np.genfromtxt(opt.mutations, delimiter = ',')
-temp = np.transpose(mutations)
-np.random.shuffle(temp)
-mutations = np.transpose(temp)
-
 cn_deletions = np.genfromtxt(opt.cn_deletions, delimiter = ',')
-temp = np.transpose(cn_deletions)
-np.random.shuffle(temp)
-cn_deletions = np.transpose(temp)
-
 cn_amplifications = np.genfromtxt(opt.cn_amplifications, delimiter = ',')
-temp = np.transpose(cn_amplifications)
-np.random.shuffle(temp)
-cn_amplifications = np.transpose(temp)
-
 cell_features = np.dstack([mutations, cn_deletions, cn_amplifications])
 
 num_cells = len(cell2id_mapping)
@@ -125,4 +113,4 @@ num_genes = len(gene2id_mapping)
 
 CUDA_ID = opt.cuda
 
-predict_drugcell(predict_data, num_genes, opt.load, opt.hidden, opt.batchsize, opt.result, cell_features)
+predict(predict_data, num_genes, opt.load, opt.hidden, opt.batchsize, opt.result, cell_features)

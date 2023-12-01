@@ -1,16 +1,14 @@
 import argparse
 import copy
 
-from nn_trainer import *
+from vnn_trainer import *
 from optuna_nn_trainer import *
-from gradient_nn_trainer import *
-
 
 def main():
 
 	torch.set_printoptions(precision = 5)
 
-	parser = argparse.ArgumentParser(description = 'Train DrugCell')
+	parser = argparse.ArgumentParser(description = 'Train VNN')
 	parser.add_argument('-onto', help = 'Ontology file used to guide the neural network', type = str)
 	parser.add_argument('-train', help = 'Training dataset', type = str)
 	parser.add_argument('-epoch', help = 'Training epochs for training', type = int, default = 300)
@@ -37,18 +35,15 @@ def main():
 	opt = parser.parse_args()
 	data_wrapper = TrainingDataWrapper(opt)
 
-	if opt.optimize == 0:
-		NNTrainer(data_wrapper).train_model()
-
-	elif opt.optimize == 1:
-		GradientNNTrainer(data_wrapper).train_model()
+	if opt.optimize == 1:
+		VNNTrainer(data_wrapper).train_model()
 
 	elif opt.optimize == 2:
 		trial_params = OptunaNNTrainer(data_wrapper).exec_study()
 		for key, value in trial_params.items():
 			if hasattr(data_wrapper, key):
 				setattr(data_wrapper, key, value)
-		GradientNNTrainer(data_wrapper).train_model()
+		VNNTrainer(data_wrapper).train_model()
 
 	else:
 		print("Wrong value for optimize.")

@@ -25,20 +25,13 @@ NeST-VNN training/testing scripts require the following environmental setup:
         https://docs.conda.io/projects/conda/en/latest/user-guide/install/.
     * PyTorch
         * The current release of DCoDR was trained/tested using PyTorch 1.8.0
-        * Depending on the specification of your machine, run appropriate command to install PyTorch.
-        The installation command line can be found in https://pytorch.org/.
-        * For a **LINUX-based GPU server** with **CUDA version 11.1**, run the following command line:
-        ```angular2
-        conda install pytorch torchvision cudatoolkit=11.1 -c pytorch
-        ```
 
-* Set up a virtual environment
-    * If you are training a new model or test the pre-trained model using a GPU server,
-     run the following command line:
-    to set up a virtual environment (cuda11_env).
-        ```angular2
-         conda env create -f conda-envs/cuda11_env.yml
-        ```
+    * Setting up the virtual environment
+        * If you are training a new model or test the pre-trained model using a GPU server,
+        run the following command line to set up a virtual environment (cuda11_env).
+            ```angular2
+            conda env create -f conda-envs/cuda11_env.yml
+            ```
 
 Required input files:
 1. Cell feature files:

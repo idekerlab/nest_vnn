@@ -8,11 +8,11 @@ from torch.autograd import Variable
 
 import util
 from training_data_wrapper import *
-from drugcell_nn import *
+from vnn import *
 from ccc_loss import *
 
 
-class NNTrainer():
+class VNNTrainer():
 
 	def __init__(self, data_wrapper):
 		self.data_wrapper = data_wrapper
@@ -24,7 +24,7 @@ class NNTrainer():
 
 	def train_model(self):
 
-		self.model = DrugCellNN(self.data_wrapper)
+		self.model = VNN(self.data_wrapper)
 		self.model.cuda(self.data_wrapper.cuda)
 
 		epoch_start_time = time.time()
@@ -44,11 +44,12 @@ class NNTrainer():
 		optimizer = torch.optim.AdamW(self.model.parameters(), lr=self.data_wrapper.lr, betas=(0.9, 0.99), eps=1e-05, weight_decay=self.data_wrapper.lr)
 		optimizer.zero_grad()
 
-		print("epoch\ttrain_corr\ttrain_loss\ttrue_auc\tpred_auc\tval_corr\tval_loss\telapsed_time")
+		print("epoch\ttrain_corr\ttrain_loss\ttrue_auc\tpred_auc\tval_corr\tval_loss\tgrad_norm\telapsed_time")
 		for epoch in range(self.data_wrapper.epochs):
 			# Train
 			self.model.train()
 			train_predict = torch.zeros(0, 0).cuda(self.data_wrapper.cuda)
+			_gradnorms = torch.empty(len(train_loader)).cuda(self.data_wrapper.cuda) # tensor for accumulating grad norms from each batch in this epoch
 
 			for i, (inputdata, labels) in enumerate(train_loader):
 				# Convert torch tensor to Variable
@@ -83,8 +84,10 @@ class NNTrainer():
 					term_name = name.split('_')[0]
 					param.grad.data = torch.mul(param.grad.data, term_mask_map[term_name])
 
+				_gradnorms[i] = util.get_grad_norm(self.model.parameters(), 2.0).unsqueeze(0) # Save gradnorm for batch
 				optimizer.step()
 
+			gradnorms = sum(_gradnorms).unsqueeze(0).cpu().numpy()[0] # Save total gradnorm for epoch
 			train_corr = util.pearson_corr(train_predict, train_label_gpu)
 
 			self.model.eval()
@@ -117,7 +120,7 @@ class NNTrainer():
 			epoch_end_time = time.time()
 			true_auc = torch.mean(train_label_gpu)
 			pred_auc = torch.mean(train_predict)
-			print("{}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(epoch, train_corr, total_loss, true_auc, pred_auc, val_corr, val_loss, epoch_end_time - epoch_start_time))
+			print("{}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(epoch, train_corr, total_loss, true_auc, pred_auc, val_corr, val_loss, gradnorms, epoch_end_time - epoch_start_time))
 			epoch_start_time = epoch_end_time
 
 			if min_loss == None:

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-homedir="/cellar/users/asinghal/Workspace/nest_vnn"
+homedir="$1"
 
 gene2idfile="${homedir}/sample/gene2ind.txt"
 cell2idfile="${homedir}/sample/cell2ind.txt"
@@ -9,7 +9,7 @@ cn_deletionfile="${homedir}/sample/cell2cndeletion.txt"
 cn_amplificationfile="${homedir}/sample/cell2cnamplification.txt"
 testdatafile="${homedir}/sample/test_data.txt"
 
-modeldir="${homedir}/sample/model"
+modeldir="${homedir}/model"
 modelfile="${modeldir}/model_final.pt"
 
 stdfile="${modeldir}/std.txt"
@@ -27,7 +27,7 @@ zscore_method="auc"
 
 cudaid=0
 
-pyScript="${homedir}/src/predict_drugcell.py"
+pyScript="${homedir}/src/predict.py"
 
 source activate cuda11_env
 

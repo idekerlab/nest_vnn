@@ -8,7 +8,7 @@ import torch.nn as nn
 from training_data_wrapper import *
 
 
-class DrugCellNN(nn.Module):
+class VNN(nn.Module):
 
 	def __init__(self, data_wrapper):
 

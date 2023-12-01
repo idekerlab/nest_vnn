@@ -7,4 +7,8 @@
 #SBATCH --mem=32G
 #SBATCH --dependency=singleton
 
-bash "/cellar/users/asinghal/Workspace/nest_vnn/sample/train.sh"
+homedir="/cellar/users/asinghal/Workspace/nest_vnn"
+
+bash "${homedir}/sample/train.sh" "${homedir}"
+
+bash "${homedir}/sample/test.sh" "${homedir}"

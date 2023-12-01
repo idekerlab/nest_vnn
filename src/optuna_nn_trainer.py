@@ -12,13 +12,13 @@ from optuna.trial import TrialState
 from optuna.samplers import GridSampler
 
 import util
-from nn_trainer import *
+from vnn_trainer import *
 from training_data_wrapper import *
-from drugcell_nn import *
+from vnn import *
 from ccc_loss import *
 
 
-class OptunaNNTrainer(NNTrainer):
+class OptunaNNTrainer(VNNTrainer):
 
 	def __init__(self, data_wrapper):
 		super().__init__(data_wrapper)
