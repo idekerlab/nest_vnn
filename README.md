@@ -37,7 +37,7 @@ NeST-VNN training/testing scripts require the following environmental setup:
      run the following command line:
     to set up a virtual environment (cuda11_env).
         ```angular2
-         conda env create -f cuda11_env.yml
+         conda env create -f conda-envs/cuda11_env.yml
         ```
 
 Required input files:
