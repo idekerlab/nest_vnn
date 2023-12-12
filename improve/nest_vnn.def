@@ -46,7 +46,7 @@ From: pytorch/pytorch:1.8.1-cuda11.1-cudnn8-runtime
 
 	#install python modules and model prerequites
 	pip install --upgrade pip
-	python3 -m pip install torchvision==0.9.1=py38_cu111 torchaudio==0.8.0=py38 torchme--extra-index-url https://download.pytorch.org/whl/cu111
+	python3 -m pip install torchvision==0.9.1=cu111 torchaudio==0.8.0=py38 --extra-index-url https://download.pytorch.org/whl/cu111
 	python3 -m pip install optuna
 	python3 -m pip install networkx
 	python3 -m pip install scikit-learn
