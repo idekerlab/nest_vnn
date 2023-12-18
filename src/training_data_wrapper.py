@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import networkx as nx
 import networkx.algorithms.components.connected as nxacc
@@ -9,30 +10,34 @@ import util
 
 class TrainingDataWrapper():
 
-	def __init__(self, args):
+	def __init__(self, args, homedir):
 
-		self.cell_id_mapping = util.load_mapping(args.cell2id, 'cell lines')
-		self.gene_id_mapping = util.load_mapping(args.gene2id, 'genes')
-		self.num_hiddens_genotype = args.genotype_hiddens
-		self.lr = args.lr
-		self.wd = args.wd
-		self.alpha = args.alpha
-		self.epochs = args.epoch
-		self.batchsize = args.batchsize
-		self.modeldir = args.modeldir
-		self.cuda = args.cuda
-		self.train = args.train
-		self.zscore_method = args.zscore_method
-		self.std = args.std
-		self.patience = args.patience
-		self.delta = args.delta
-		self.min_dropout_layer = args.min_dropout_layer
-		self.dropout_fraction = args.dropout_fraction
-		self.load_ontology(args.onto)
+		self.cell_id_mapping = util.load_mapping(homedir + '/sample/' + args['cell2id'], 'cell lines')
+		self.gene_id_mapping = util.load_mapping(homedir + '/sample/' + args['gene2id'], 'genes')
+		self.num_hiddens_genotype = args['genotype_hiddens']
+		self.lr = args['learning_rate']
+		self.wd = args['wd']
+		self.alpha = args['alpha']
+		self.epochs = args['epochs']
+		self.batchsize = args['batch_size']
+		self.modeldir = args['modeldir']
 
-		self.mutations = np.genfromtxt(args.mutations, delimiter = ',')
-		self.cn_deletions = np.genfromtxt(args.cn_deletions, delimiter = ',')
-		self.cn_amplifications = np.genfromtxt(args.cn_amplifications, delimiter = ',')
+		print(self.modeldir)
+		if not os.path.exists(self.modeldir):
+			os.mkdirs(self.modeldir)
+		self.cuda = args['cuda']
+		self.train = homedir + '/sample/' + args['train_data']
+		self.zscore_method = args['zscore_method']
+		self.std = self.modeldir + '/' + args['std']
+		self.patience = args['early_stop']
+		self.delta = args['delta']
+		self.min_dropout_layer = args['min_dropout_layer']
+		self.dropout_fraction = args['dropout']
+		self.load_ontology(homedir + '/sample/' + args['onto'])
+
+		self.mutations = np.genfromtxt(homedir + '/sample/' + args['mutations'], delimiter = ',')
+		self.cn_deletions = np.genfromtxt(homedir + '/sample/' + args['cn_deletions'], delimiter = ',')
+		self.cn_amplifications = np.genfromtxt(homedir + '/sample/' + args['cn_amplifications'], delimiter = ',')
 		self.cell_features = np.dstack([self.mutations, self.cn_deletions, self.cn_amplifications])
 
 		self.train_feature, self.train_label, self.val_feature, self.val_label = self.prepare_train_data()
@@ -42,6 +47,8 @@ class TrainingDataWrapper():
 		return util.prepare_train_data(self.train, self.cell_id_mapping, self.zscore_method, self.std)
 
 	def load_ontology(self, file_name):
+
+		print(file_name)
 
 		dG = nx.DiGraph()
 		term_direct_gene_map = {}
