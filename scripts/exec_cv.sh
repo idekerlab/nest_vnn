@@ -1,6 +1,6 @@
 #!/bin/bash
 
-homedir="/cellar/users/asinghal/Workspace/dcodr"
+homedir="your_home_dir"
 
 dataset="av"
 zscore_method="auc"
@@ -8,11 +8,10 @@ folds=5
 nested_folds=1
 
 #drugs=`awk '{ print $1 }' "${homedir}/data/training_files_av/drugname_${dataset}.txt"`
-#drugs=`awk '{ print $1 }' "${homedir}/data/training_files_av/drugname_cmap.txt"`
 
 for ont in "ctg"
 do
-	for drug in "Palbociclib" #"dichloroplatinum-diammoniate" "125316-60-1" "camptothecin" "Ceralasertib"
+	for drug in "Palbociclib" #"$drugs"
 	do
 		for ((i=1;i<=folds;i++));
 		do

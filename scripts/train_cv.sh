@@ -37,5 +37,3 @@ python -u $pyScript -onto $ontfile -gene2id $gene2idfile -cell2id $cell2idfile -
 qcscript="${homedir}/src/qc_plots.py"
 
 source activate base
-
-#python -u $qcscript $modeldir
