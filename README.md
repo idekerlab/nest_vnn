@@ -12,6 +12,10 @@ the feature vector for each cell is a binary vector representing
 mutational status and copy number variations of the genes 
 used in clinical panels like Foundation Medicine (n=718).
 
+Related publications (please cite both if you use the repo):
+1) Park, S., Silva, E., Singhal, A. et al. A deep learning model of tumor cell architecture elucidates response and resistance to CDK4/6 inhibitors. Nat Cancer (2024). https://doi.org/10.1038/s43018-024-00740-1
+2) Zhao, Singhal, et al. Cancer Mutations Converge on a Collection of Protein Assemblies to Predict Resistance to Replication Stress. Cancer Discov 1 March 2024; 14 (3): 508–523. https://doi.org/10.1158/2159-8290.CD-23-0641
+
 # Environment set up for training and testing
 NeST-VNN training/testing scripts require the following environmental setup:
 
