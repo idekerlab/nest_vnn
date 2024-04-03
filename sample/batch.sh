@@ -9,6 +9,6 @@
 
 homedir="/cellar/users/asinghal/Workspace/nest_vnn"
 
-#bash "${homedir}/sample/train.sh" "${homedir}"
+bash "${homedir}/sample/train.sh" "${homedir}"
 
 bash "${homedir}/sample/test.sh" "${homedir}"

@@ -33,7 +33,3 @@ python -u $pyScript -onto $ontfile -gene2id $gene2idfile -cell2id $cell2idfile -
 	-mutations $mutationfile -cn_deletions $cn_deletionfile -cn_amplifications $cn_amplificationfile \
 	-std $stdfile -model $modeldir -genotype_hiddens 4 -lr 0.001 -cuda $cudaid -epoch 150 \
 	-batchsize 64 -optimize 1 -zscore_method $zscore_method > "${modeldir}/train.log"
-
-qcscript="${homedir}/src/qc_plots.py"
-
-source activate base

@@ -14,7 +14,7 @@ from optuna.samplers import GridSampler
 import util
 from vnn_trainer import *
 from training_data_wrapper import *
-from vnn import *
+from drugcell_nn import *
 from ccc_loss import *
 
 
@@ -22,22 +22,25 @@ class OptunaNNTrainer(VNNTrainer):
 
 	def __init__(self, data_wrapper):
 		super().__init__(data_wrapper)
-		
+
 
 	def exec_study(self):
-		search_space = {
-			"genotype_hiddens": [4],
-			"lr": [1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4, 1e-3]
-		}
-		study = optuna.create_study(sampler=GridSampler(search_space), direction="maximize")
-		study.optimize(self.train_model, n_trials=8)
-		#study = optuna.create_study(direction="maximize")
-		#study.optimize(self.train_model, n_trials=10)
+		# Use this routine for GridSearch
+		#search_space = {
+		#	"genotype_hiddens": [4],
+		#	"lr": [1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4, 1e-3]
+		#}
+		#study = optuna.create_study(sampler=GridSampler(search_space), direction="maximize")
+		#study.optimize(self.train_model, n_trials=8)
+
+		study = optuna.create_study(direction="maximize")
+		study.optimize(self.train_model, n_trials=1)
 		return self.print_result(study)
 
 
 	def setup_trials(self, trial):
 
+		# Default routine; runs the genetic algorithm
 		self.data_wrapper.genotype_hiddens = trial.suggest_categorical("genotype_hiddens", [4])
 		self.data_wrapper.lr = trial.suggest_categorical("lr", [1.2e-4, 1.5e-4, 1.8e-4, 2e-4, 3e-4, 4e-4, 5e-4, 1e-3])
 

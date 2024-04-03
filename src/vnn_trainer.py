@@ -8,7 +8,7 @@ from torch.autograd import Variable
 
 import util
 from training_data_wrapper import *
-from vnn import *
+from drugcell_nn import *
 from ccc_loss import *
 
 
@@ -24,7 +24,7 @@ class VNNTrainer():
 
 	def train_model(self):
 
-		self.model = VNN(self.data_wrapper)
+		self.model = DrugCellNN(self.data_wrapper)
 		self.model.cuda(self.data_wrapper.cuda)
 
 		epoch_start_time = time.time()
