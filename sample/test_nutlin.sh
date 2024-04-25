@@ -9,7 +9,7 @@ cn_deletionfile="${homedir}/sample/cell2cndeletion.txt"
 cn_amplificationfile="${homedir}/sample/cell2cnamplification.txt"
 testdatafile="${homedir}/sample/test_data.txt"
 
-modeldir="${homedir}/pretrained_models/nutlin-3A/nutlin-3A_1"
+modeldir="${homedir}/sample/models/nutlin-3A_1"
 modelfile="${modeldir}/model_nutlin-3A_1.pt"
 
 stdfile="${modeldir}/std.txt"
