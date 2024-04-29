@@ -68,7 +68,7 @@ _sample_ folder)
     ```
     python predict.py   -gene2id gene2ind.txt
                         -cell2id cell2ind.txt
-                        -genotype cell2mutation.txt
+                        -mutations cell2mutation.txt
                         -cn_deletions cell2cndeletion.txt
                         -cn_amplifications cell2amplification.txt
                         -predict test_data.txt
@@ -128,7 +128,9 @@ to run the training scripts:
      * Example of the file (_ontology.txt_) is provided in _sample_ folder.
 
 
-There are several optional parameters that you can provide in addition to the input files:
+There are several optional parameters that you can provide in addition to the input files.
+Many of these are hyperparameters and need to be optimized. The values in the sample file
+may not work for a different model.
 
 1. _-modeldir_: a name of directory where you want to store the trained models. The default
 is set to "MODEL" in the current working directory.
@@ -158,7 +160,7 @@ _sample/train.sh_:
 python -u train.py  -onto ontology.txt
                     -gene2id gene2ind.txt
                     -cell2id cell2ind.txt
-                    -genotype cell2mutation.txt
+                    -mutations cell2mutation.txt
                     -cn_deletions cell2cndeletion.txt
                     -cn_amplifications cell2amplification.txt
                     -train train.txt
