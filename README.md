@@ -52,13 +52,12 @@ Required input files:
          indicating copy number amplification (1) (0 for not).
 
 2. Test data file: _test_data.txt_
-    * A tab-delimited file containing all data points that you want to estimate drug response for.
-    The 1st column is identification of cells (genotypes) and the 2nd column is identification of
-    drugs.
+    * A tab-delimited file containing all test samples.
+    The 1st column is the ID of cells (genotypes) and the 2nd column is the ID of
+    the drug, which is kept for backward compatibility.
 
-To load a pre-trained model used for analyses in our manuscript 
-and make prediction for the cell lines of your interest, 
-execute the following:
+To load a pre-trained model used for analyses in our manuscript and make predictions
+for the cell lines of your interest, execute the following:
 
 1. Make sure you have _gene2ind.txt_, _cell2ind.txt_, _cell2mutation.txt_, _cell2cndeletion.txt_,
 _cell2amplification.txt_, and your file containing test data in proper format (examples are provided in
@@ -83,8 +82,8 @@ _sample_ folder)
 
 
 # Train a new  model
-To train a new model using a custom data set, first make sure that you have
-a proper virtual environment set up. Also make sure that you have all the required files
+To train a new model using a custom data set, first, make sure you have
+a proper virtual environment set up. Also, make sure that you have all the required files
 to run the training scripts:
 
 1. Cell feature files:
@@ -102,13 +101,13 @@ to run the training scripts:
 
 2. Training data file: _training_data.txt_
     * A tab-delimited file containing all data points that you want to use to train the model.
-    The 1st column is identification of cells (genotypes), the 2nd column is a placeholder 
-    for drug id and the 3rd column is an observed drug response in a floating point number.
+    The 1st column is ID of cells (genotypes), and the 2nd column is a placeholder 
+    for drug ID and the 3rd column is an observed drug response in a floating point number.
 
 3. Ontology (hierarchy) file: _ontology.txt_
     * A tab-delimited file that contains the ontology (hierarchy) that defines the structure of a branch
     of a NeST-VNN model that encodes the genotypes. The first column is always a term (subsystem or pathway),
-    and the second column is a term or a gene.
+    and the second is a term or a gene.
     The third column should be set to "default" when the line represents a link between terms,
     "gene" when the line represents an annotation link between a term and a gene.
     The following is an example describing a sample hierarchy.
@@ -132,15 +131,15 @@ There are several optional parameters that you can provide in addition to the in
 Many of these are hyperparameters and need to be optimized. The values in the sample file
 may not work for a different model.
 
-1. _-modeldir_: a name of directory where you want to store the trained models. The default
+1. _-modeldir_: a name of the directory where you want to store the trained models. The default
 is set to "MODEL" in the current working directory.
 
-2. _-genotype_hiddens_: a number of neurons to assign each subsystem in the hierarchy.
+2. _-genotype_hiddens_: the number of neurons to assign each subsystem in the hierarchy.
 The default is set to 6.
 
-3. _-epoch_: the number of epoch to run during the training phase. The default is set to 300.
+3. _-epoch_: the number of epochs to run during the training phase. The default is set to 300.
 
-4. _-batchsize_: the size of each batch to process at a time. The deafult is set to 5000.
+4. _-batchsize_: the size of each batch to process at a time. The default is set to 5000.
 You may increase this number to speed up the training process within the memory capacity
 of your GPU server.
 
@@ -148,8 +147,8 @@ of your GPU server.
 
 6. _wd_: Weight decay. Default is set 0.001.
 
-7. _-cuda_: the ID of GPU unit that you want to use for the model training. The default setting
-is to use GPU 0.
+7. _-cuda_: the ID of the GPU unit that you want to use for the model training. 
+The default setting is to use GPU 0.
 
 * All the parameters are mentioned in the src/train.py file.
 
