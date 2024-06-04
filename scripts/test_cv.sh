@@ -12,26 +12,29 @@ testdatafile="${homedir}/data/training_files_${3}/${6}_test_${3}_${4}.txt"
 i=$6
 j=$7
 nf=$(( i + 5*(j-1) ))
-modeldir="${homedir}/models/model_${2}_${3}_${4}_${5}_${nf}"
+modeldir="$models/model_${2}_${3}_${4}_${5}_${nf}"
 modelfile="${modeldir}/model_final.pt"
+
+echo modeldir: $modeldir
+
 
 stdfile="${modeldir}/std.txt"
 
 resultfile="${modeldir}/predict"
 
 hiddendir="${modeldir}/hidden"
-if [ -d $hiddendir ]
-then
-	rm -rf $hiddendir
-fi
-mkdir -p $hiddendir
+#if [ -d $hiddendir ]
+#then
+#	rm -rf $hiddendir
+#fi
+#mkdir -p $hiddendir
 
 cudaid=0
 
-pyScript="${homedir}/src/predict_drugcell.py"
+pyScript="${homedir}/src/predict.py"
 
-source activate cuda11_env
+#source activate cuda11_env
 
 python -u $pyScript -gene2id $gene2idfile -cell2id $cell2idfile -std $stdfile -hidden $hiddendir -result $resultfile \
 	-mutations $mutationfile -cn_deletions $cn_deletionfile -cn_amplifications $cn_amplificationfile \
-	-batchsize 2000 -predict $testdatafile -zscore_method $zscore_method -load $modelfile -cuda $cudaid > "${modeldir}/test.log"
+	-batchsize 2000 -predict $testdatafile -zscore_method $zscore_method -load $modelfile -cuda $cudaid > "$test_output.log"

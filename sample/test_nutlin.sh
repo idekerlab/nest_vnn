@@ -1,6 +1,6 @@
 #!/bin/bash
 
-homedir="$1"
+homedir="$HOME/nest_vnn"
 
 gene2idfile="${homedir}/sample/gene2ind.txt"
 cell2idfile="${homedir}/sample/cell2ind.txt"
@@ -9,7 +9,7 @@ cn_deletionfile="${homedir}/sample/cell2cndeletion.txt"
 cn_amplificationfile="${homedir}/sample/cell2cnamplification.txt"
 testdatafile="${homedir}/sample/test_data.txt"
 
-modeldir="${homedir}/sample/models/nutlin-3A_1"
+modeldir="${homedir}/sample/pretrained_model_outputs/nutlin-3A_1"
 modelfile="${modeldir}/model_nutlin-3A_1.pt"
 
 stdfile="${modeldir}/std.txt"

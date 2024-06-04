@@ -1,5 +1,5 @@
 #!/bin/bash
-homedir="$1"
+homedir="$HOME/nest_vnn"
 
 gene2idfile="${homedir}/sample/gene2ind.txt"
 cell2idfile="${homedir}/sample/cell2ind.txt"
@@ -9,7 +9,7 @@ cn_deletionfile="${homedir}/sample/cell2cndeletion.txt"
 cn_amplificationfile="${homedir}/sample/cell2cnamplification.txt"
 traindatafile="${homedir}/sample/training_data.txt"
 
-modeldir="${homedir}/model"
+modeldir="${homedir}/my_model"
 if [ -d $modeldir ]
 then
 	rm -rf $modeldir
@@ -29,5 +29,5 @@ source activate cuda11_env
 
 python -u $pyScript -onto $ontfile -gene2id $gene2idfile -cell2id $cell2idfile -train $traindatafile \
 	-mutations $mutationfile -cn_deletions $cn_deletionfile -cn_amplifications $cn_amplificationfile \
-	-std $stdfile -model $modeldir -genotype_hiddens 4 -lr 0.0005 -cuda $cudaid -epoch 2 \
-	-batchsize 64 -optimize 2 -zscore_method $zscore_method > "${modeldir}/train.log"
+	-std $stdfile -model $modeldir -genotype_hiddens 6 -cuda $cudaid \
+	-optimize 2 -zscore_method $zscore_method > "${modeldir}/train.log"
