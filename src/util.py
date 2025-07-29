@@ -1,5 +1,4 @@
 import torch
-from torch._six import inf
 import math
 import numpy as np
 import pandas as pd
@@ -226,7 +225,7 @@ def get_grad_norm(model_params, norm_type):
 		return torch.tensor(0.)
 
 	device = model_params[0].grad.device # get device
-	if norm_type == inf: # infinity norm
+	if norm_type == math.inf: # infinity norm
 		total_norm = max(p.grad.detach().abs().max().to(device) for p in model_params)
 	else: # total norm
 		total_norm = torch.norm(torch.stack([torch.norm(p.grad.detach(), norm_type).to(device) for p in model_params]), norm_type)
